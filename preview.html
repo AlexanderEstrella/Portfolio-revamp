@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alexander Estrella — Backend & Integration Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0b;
+  --bg-card: #111113;
+  --bg-card-hover: #18181b;
+  --text-primary: #fafaf9;
+  --text-secondary: #a1a1aa;
+  --text-muted: #636370;
+  --accent: #22d3ee;
+  --accent-warm: #fb923c;
+  --accent-green: #4ade80;
+  --border: #27272a;
+  --border-hover: #3f3f46;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'DM Sans', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--sans);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NOISE TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── SCROLL PROGRESS ── */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-warm));
+  z-index: 1000;
+  transition: width 0.1s linear;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 1.25rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(10,10,11,0.7);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s;
+}
+nav.scrolled { border-bottom-color: var(--border); }
+nav .logo {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+nav .logo span { color: var(--accent); }
+nav .nav-links { display: flex; gap: 2rem; align-items: center; }
+nav .nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+nav .nav-links a:hover { color: var(--text-primary); }
+.nav-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--accent-green);
+}
+.nav-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  animation: pulse-dot 2s ease infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8rem 4rem 6rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+.hero-label {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.2s forwards;
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.4s forwards;
+}
+.hero h1 em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-desc {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  max-width: 580px;
+  line-height: 1.8;
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.6s forwards;
+}
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.8s forwards;
+}
+.hero-stat .number {
+  font-family: var(--serif);
+  font-size: 2.5rem;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+.hero-stat .label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.25rem;
+}
+
+/* ── GLOW ORB ── */
+.hero-glow {
+  position: absolute;
+  top: 20%;
+  right: -5%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(34,211,238,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: drift 8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-30px, 20px) scale(1.1); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SECTION COMMON ── */
+section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 6rem 4rem;
+}
+.section-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.section-desc {
+  color: var(--text-secondary);
+  max-width: 550px;
+  line-height: 1.7;
+  margin-bottom: 4rem;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 4rem;
+}
+.divider hr {
+  border: none;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── PROJECT CARDS ── */
+.projects-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.project-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  overflow: hidden;
+}
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(135deg, transparent, rgba(34,211,238,0.15), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.project-card:hover::before { opacity: 1; }
+.project-card:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+  transform: translateY(-4px);
+}
+.project-info { display: flex; flex-direction: column; justify-content: center; }
+.project-number {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  letter-spacing: 0.1em;
+}
+.project-name {
+  font-family: var(--serif);
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+.project-tagline {
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.02em;
+}
+.project-desc {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+}
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.tech-tag {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 100px;
+  background: rgba(34,211,238,0.06);
+  color: var(--accent);
+  border: 1px solid rgba(34,211,238,0.12);
+  letter-spacing: 0.03em;
+}
+.project-links { display: flex; gap: 1rem; }
+.project-link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color 0.2s;
+}
+.project-link:hover { color: var(--accent); }
+.project-link svg { width: 14px; height: 14px; }
+
+/* Project Visual */
+.project-visual {
+  background: var(--bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── ENDO COMPANION VISUAL ── */
+.endo-visual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+.endo-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+}
+.endo-card.wide { grid-column: 1 / -1; }
+.endo-card-label {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+.endo-card-value {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  color: var(--text-primary);
+}
+.endo-card-sub { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem; }
+.endo-bar-group { display: flex; gap: 3px; align-items: flex-end; height: 40px; margin-top: 0.5rem; }
+.endo-bar {
+  width: 12px;
+  background: linear-gradient(to top, rgba(34,211,238,0.3), var(--accent));
+  border-radius: 3px 3px 0 0;
+  animation: barGrow 1s ease forwards;
+}
+@keyframes barGrow { from { height: 0; } }
+.shield-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, rgba(74,222,128,0.1), rgba(74,222,128,0.05));
+  border: 1px solid rgba(74,222,128,0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+.shield-icon svg { width: 24px; height: 24px; color: var(--accent-green); }
+
+/* ── GSI VISUAL ── */
+.gsi-visual { width: 100%; }
+.gsi-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+.gsi-node {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s;
+}
+.gsi-node:hover { border-color: var(--border-hover); }
+.gsi-node-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+.gsi-node-icon.sage { background: rgba(251,146,60,0.1); border: 1px solid rgba(251,146,60,0.2); }
+.gsi-node-icon.node { background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); }
+.gsi-node-icon.monday { background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.2); }
+.gsi-node-name { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); }
+.gsi-node-desc { font-size: 0.7rem; color: var(--text-muted); }
+.gsi-arrow {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-family: var(--mono);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.gsi-arrow::before, .gsi-arrow::after {
+  content: '';
+  height: 1px;
+  width: 20px;
+  background: var(--border);
+}
+
+/* ── SELFPOSTMAN VISUAL ── */
+.sp-visual { width: 100%; }
+.sp-window {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+}
+.sp-titlebar {
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.sp-dot { width: 8px; height: 8px; border-radius: 50%; }
+.sp-dot.r { background: #ef4444; }
+.sp-dot.y { background: #eab308; }
+.sp-dot.g { background: #22c55e; }
+.sp-titlebar-text {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-left: 0.5rem;
+}
+.sp-body { padding: 1rem; }
+.sp-method {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.sp-method-badge {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(74,222,128,0.12);
+  color: var(--accent-green);
+}
+.sp-method-url {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+}
+.sp-code {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  overflow-x: auto;
+}
+.sp-code .key { color: var(--accent); }
+.sp-code .str { color: var(--accent-warm); }
+.sp-code .tag { color: #c084fc; }
+.sp-code .attr { color: var(--accent-green); }
+.sp-status {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+}
+.sp-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-green);
+}
+
+/* ── SKILLS SECTION ── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+.skill-category h3 {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.skill-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.skill-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+.skill-item .name { color: var(--text-primary); }
+.skill-item .years {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* ── ABOUT / PHILOSOPHY ── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+}
+.about-text { color: var(--text-secondary); line-height: 1.85; font-size: 1rem; }
+.about-text p + p { margin-top: 1.25rem; }
+.about-text strong { color: var(--text-primary); font-weight: 600; }
+.about-values { display: flex; flex-direction: column; gap: 1.5rem; }
+.value-item {
+  padding: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+.value-item:hover { border-color: var(--border-hover); transform: translateX(4px); }
+.value-item h4 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.value-item p { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6; }
+
+/* ── CONTACT ── */
+.contact-section {
+  text-align: center;
+  padding: 8rem 4rem;
+}
+.contact-section .section-desc {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.75rem;
+  border-radius: 100px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.contact-btn.primary {
+  background: var(--text-primary);
+  color: var(--bg);
+}
+.contact-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(250,250,249,0.15); }
+.contact-btn.secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+.contact-btn.secondary:hover { border-color: var(--text-secondary); transform: translateY(-2px); }
+
+/* ── FOOTER ── */
+footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 4rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+footer a { color: var(--text-secondary); text-decoration: none; }
+footer a:hover { color: var(--text-primary); }
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero { padding: 7rem 2rem 4rem; }
+  section { padding: 4rem 2rem; }
+  .divider { padding: 0 2rem; }
+  .project-card { grid-template-columns: 1fr; gap: 2rem; }
+  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  nav { padding: 1rem 1.5rem; }
+  nav .nav-links { gap: 1rem; }
+  .hero-stats { gap: 2rem; flex-wrap: wrap; }
+  footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem; }
+  .contact-section { padding: 5rem 2rem; }
+}
+@media (max-width: 600px) {
+  nav .nav-links a:not(.nav-status) { display: none; }
+  .hero h1 { font-size: 2.5rem; }
+  .hero-stat .number { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Navigation -->
+<nav id="nav">
+  <a href="#" class="logo">ae<span>.</span></a>
+  <div class="nav-links">
+    <a href="#projects">Work</a>
+    <a href="#skills">Skills</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <span class="nav-status">Open to work</span>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-label">Backend Engineer · Integrations · Automation</div>
+  <h1>I turn messy operations<br>into <em>reliable systems.</em></h1>
+  <p class="hero-desc">
+    Backend and integration engineer focused on migration tooling, ETL workflows, API services,
+    and automation. I build software that translates legacy systems, reduces manual work,
+    and holds up when people depend on it.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="number">6+</div>
+      <div class="label">Years Solving Problems</div>
+    </div>
+    <div class="hero-stat">
+      <div class="number">1M+</div>
+      <div class="label">Records Processed</div>
+    </div>
+    <div class="hero-stat">
+      <div class="number">50+</div>
+      <div class="label">Client Environments</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- Projects -->
+<section id="projects">
+  <div class="section-label reveal">Featured Work</div>
+  <h2 class="section-title reveal">Selected work.</h2>
+  <p class="section-desc reveal">A few projects that show how I approach migrations, integrations, internal tools, and practical problem solving.</p>
+
+  <div class="projects-grid">
+
+    <!-- Project 1: DataBridge Migration Engine -->
+    <div class="project-card reveal">
+      <div class="project-info">
+        <div class="project-number">01</div>
+        <h3 class="project-name">DataBridge Migration Engine</h3>
+        <div class="project-tagline">Internal migration platform for Sage 300 CRE → Sage Intacct</div>
+        <p class="project-desc">
+          Core contributor on an internal migration system that translates legacy Sage 300 CRE data into
+          Sage Intacct-ready outputs. Helped turn a fragile, query-driven process into reusable stored procedures,
+          functions, validations, and automation layers that supported six client migration tracks and pushed the
+          workflow toward roughly 95% automation.
+        </p>
+        <div class="project-tech">
+          <span class="tech-tag">SQL Server</span>
+          <span class="tech-tag">Stored Procedures</span>
+          <span class="tech-tag">C#</span>
+          <span class="tech-tag">Node.js</span>
+          <span class="tech-tag">ERP Migration</span>
+          <span class="tech-tag">Data Validation</span>
+        </div>
+        <div class="project-links">
+          <span class="project-link" style="color: var(--accent-green); cursor: default;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+            Internal Tooling
+          </span>
+        </div>
+      </div>
+      <div class="project-visual">
+        <div class="gsi-visual">
+          <div class="gsi-flow">
+            <div class="gsi-node">
+              <div class="gsi-node-icon sage">🏗️</div>
+              <div>
+                <div class="gsi-node-name">Sage 300 CRE</div>
+                <div class="gsi-node-desc">Legacy jobs · AP · AR · GL data</div>
+              </div>
+            </div>
+            <div class="gsi-arrow">map + validate + transform</div>
+            <div class="gsi-node">
+              <div class="gsi-node-icon node">⚙️</div>
+              <div>
+                <div class="gsi-node-name">DataBridge Engine</div>
+                <div class="gsi-node-desc">Procedures · Functions · Reconciliation</div>
+              </div>
+            </div>
+            <div class="gsi-arrow">migration-ready output</div>
+            <div class="gsi-node">
+              <div class="gsi-node-icon monday">📘</div>
+              <div>
+                <div class="gsi-node-name">Sage Intacct</div>
+                <div class="gsi-node-desc">Target structure · Cleaner cutovers</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 2: GSI-Monday Sync -->
+    <div class="project-card reveal">
+      <div class="project-info">
+        <div class="project-number">02</div>
+        <h3 class="project-name">GSI-Monday Sync</h3>
+        <div class="project-tagline">Production integration between ERP data and operational workflows</div>
+        <p class="project-desc">
+          Built a live integration pipeline connecting Sage 300 CRE to Monday.com through Node.js and 32-bit ODBC.
+          Designed the job flow around diffing, retries, structured payload generation, and idempotent processing so
+          operational teams could trust updates instead of manually reconciling them.
+        </p>
+        <div class="project-tech">
+          <span class="tech-tag">Node.js (32-bit)</span>
+          <span class="tech-tag">ODBC</span>
+          <span class="tech-tag">Sage 300 CRE</span>
+          <span class="tech-tag">Monday.com API</span>
+          <span class="tech-tag">SOLID</span>
+          <span class="tech-tag">Idempotent</span>
+        </div>
+        <div class="project-links">
+          <span class="project-link" style="color: var(--accent-green); cursor: default;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+            Live in Production
+          </span>
+        </div>
+      </div>
+      <div class="project-visual">
+        <div class="gsi-visual">
+          <div class="gsi-flow">
+            <div class="gsi-node">
+              <div class="gsi-node-icon sage">🏗️</div>
+              <div>
+                <div class="gsi-node-name">Sage 300 CRE</div>
+                <div class="gsi-node-desc">32-bit ODBC · Timberline Data</div>
+              </div>
+            </div>
+            <div class="gsi-arrow">row hash + diff</div>
+            <div class="gsi-node">
+              <div class="gsi-node-icon node">⚙️</div>
+              <div>
+                <div class="gsi-node-name">Node.js Pipeline</div>
+                <div class="gsi-node-desc">Transform · Validate · Retry</div>
+              </div>
+            </div>
+            <div class="gsi-arrow">JSON payload</div>
+            <div class="gsi-node">
+              <div class="gsi-node-icon monday">📋</div>
+              <div>
+                <div class="gsi-node-name">Monday.com</div>
+                <div class="gsi-node-desc">Boards · Items · Status Sync</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 3: SelfPostman -->
+    <div class="project-card reveal">
+      <div class="project-info">
+        <div class="project-number">03</div>
+        <h3 class="project-name">SelfPostman</h3>
+        <div class="project-tagline">Internal developer tool for faster Intacct integration work</div>
+        <p class="project-desc">
+          Built a purpose-fit API client for Sage Intacct's XML API when generic tools were slowing the team down.
+          Supports nested field construction, payload preview, auth handling, and object-level CRUD workflows to make
+          debugging, testing, and mapping work faster and less error-prone.
+        </p>
+        <div class="project-tech">
+          <span class="tech-tag">JavaScript</span>
+          <span class="tech-tag">XML</span>
+          <span class="tech-tag">Sage Intacct API</span>
+          <span class="tech-tag">REST</span>
+          <span class="tech-tag">Nested Fields</span>
+          <span class="tech-tag">Auth Flows</span>
+        </div>
+        <div class="project-links">
+          <span class="project-link" style="color: var(--text-muted); cursor: default;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17l-5.1-5.1m0 0L12 4.37m-5.68 5.7h11.8"/></svg>
+            Internal Tool
+          </span>
+        </div>
+      </div>
+      <div class="project-visual">
+        <div class="sp-visual">
+          <div class="sp-window">
+            <div class="sp-titlebar">
+              <div class="sp-dot r"></div>
+              <div class="sp-dot y"></div>
+              <div class="sp-dot g"></div>
+              <span class="sp-titlebar-text">selfpostman — intacct sandbox</span>
+            </div>
+            <div class="sp-body">
+              <div class="sp-method">
+                <span class="sp-method-badge">POST</span>
+                <span class="sp-method-url">api.intacct.com/ia/xml/xmlgw.phtml</span>
+              </div>
+              <div class="sp-code"><span class="tag">&lt;create&gt;</span>
+  <span class="tag">&lt;APBILL&gt;</span>
+    <span class="tag">&lt;VENDORID&gt;</span><span class="str">V-1042</span><span class="tag">&lt;/VENDORID&gt;</span>
+    <span class="tag">&lt;WHENCREATED&gt;</span><span class="str">04/08/2026</span><span class="tag">&lt;/WHENCREATED&gt;</span>
+    <span class="tag">&lt;APBILLITEMS&gt;</span>
+      <span class="tag">&lt;APBILLITEM&gt;</span>
+        <span class="tag">&lt;ACCOUNTNO&gt;</span><span class="str">6500</span><span class="tag">&lt;/ACCOUNTNO&gt;</span>
+        <span class="tag">&lt;TRX_AMOUNT&gt;</span><span class="str">2450.00</span><span class="tag">&lt;/TRX_AMOUNT&gt;</span>
+      <span class="tag">&lt;/APBILLITEM&gt;</span>
+    <span class="tag">&lt;/APBILLITEMS&gt;</span>
+  <span class="tag">&lt;/APBILL&gt;</span>
+<span class="tag">&lt;/create&gt;</span></div>
+              <div class="sp-status">
+                <span class="sp-status-dot"></span>
+                200 OK — Preview validated · Ready to push
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 4: Endo Companion -->
+    <div class="project-card reveal">
+      <div class="project-info">
+        <div class="project-number">04</div>
+        <h3 class="project-name">Endo Companion</h3>
+        <div class="project-tagline">Personal project · private repository</div>
+        <p class="project-desc">
+          Built as a personal project to support endometriosis management and day-to-day symptom tracking.
+          The focus was simple: make something useful, secure, and easy to trust. I designed the app around
+          authenticated access, audit logging, rate limiting, and careful handling of sensitive health data.
+        </p>
+        <div class="project-tech">
+          <span class="tech-tag">React</span>
+          <span class="tech-tag">Node.js</span>
+          <span class="tech-tag">JavaScript</span>
+          <span class="tech-tag">REST API</span>
+          <span class="tech-tag">JWT Auth</span>
+          <span class="tech-tag">Audit Logging</span>
+        </div>
+        <div class="project-links">
+          <span class="project-link" style="color: var(--text-muted); cursor: default;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+            Personal Project
+          </span>
+          <span class="project-link" style="color: var(--text-muted); cursor: default;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+            Private Repo
+          </span>
+        </div>
+      </div>
+      <div class="project-visual">
+        <div class="endo-visual">
+          <div class="endo-card">
+            <div class="endo-card-label">Entries Logged</div>
+            <div class="endo-card-value">1,247</div>
+            <div class="endo-card-sub">Personal usage data</div>
+          </div>
+          <div class="endo-card">
+            <div class="shield-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+            </div>
+            <div class="endo-card-label">Access Model</div>
+            <div class="endo-card-value" style="font-size: 1.1rem;">Role Based</div>
+          </div>
+          <div class="endo-card wide">
+            <div class="endo-card-label">30 Day Activity Snapshot</div>
+            <div class="endo-bar-group">
+              <div class="endo-bar" style="height: 60%"></div>
+              <div class="endo-bar" style="height: 45%"></div>
+              <div class="endo-bar" style="height: 70%"></div>
+              <div class="endo-bar" style="height: 35%"></div>
+              <div class="endo-bar" style="height: 50%"></div>
+              <div class="endo-bar" style="height: 80%"></div>
+              <div class="endo-bar" style="height: 40%"></div>
+              <div class="endo-bar" style="height: 55%"></div>
+              <div class="endo-bar" style="height: 30%"></div>
+              <div class="endo-bar" style="height: 65%"></div>
+              <div class="endo-bar" style="height: 45%"></div>
+              <div class="endo-bar" style="height: 25%"></div>
+              <div class="endo-bar" style="height: 50%"></div>
+              <div class="endo-bar" style="height: 35%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- Skills -->
+<section id="skills">
+  <div class="section-label reveal">Technical Depth</div>
+  <h2 class="section-title reveal">Backend-first,<br>delivery-minded.</h2>
+  <p class="section-desc reveal">I am strongest where data, APIs, automation, and operations meet — and I am comfortable moving across the stack when the work calls for it.</p>
+
+  <div class="skills-grid reveal">
+    <div class="skill-category">
+      <h3>Backend & Languages</h3>
+      <div class="skill-list">
+        <div class="skill-item"><span class="name">JavaScript / Node.js</span><span class="years">6 yrs</span></div>
+        <div class="skill-item"><span class="name">T-SQL / SQL Server</span><span class="years">4 yrs</span></div>
+        <div class="skill-item"><span class="name">C#</span><span class="years">2 yrs</span></div>
+        <div class="skill-item"><span class="name">Python</span><span class="years">2 yrs</span></div>
+        <div class="skill-item"><span class="name">REST / JSON / XML</span><span class="years">5 yrs</span></div>
+      </div>
+    </div>
+    <div class="skill-category">
+      <h3>Data & Integration</h3>
+      <div class="skill-list">
+        <div class="skill-item"><span class="name">ETL Workflow Design</span><span class="years">4 yrs</span></div>
+        <div class="skill-item"><span class="name">ERP Data Migration</span><span class="years">4 yrs</span></div>
+        <div class="skill-item"><span class="name">Reconciliation / Validation</span><span class="years">4 yrs</span></div>
+        <div class="skill-item"><span class="name">Idempotency / Retry Logic</span><span class="years">4 yrs</span></div>
+        <div class="skill-item"><span class="name">SFTP / CSV / Excel Imports</span><span class="years">4 yrs</span></div>
+      </div>
+    </div>
+    <div class="skill-category">
+      <h3>Cloud, Ops & Delivery</h3>
+      <div class="skill-list">
+        <div class="skill-item"><span class="name">Azure Infrastructure</span><span class="years">3 yrs</span></div>
+        <div class="skill-item"><span class="name">Monitoring / Logging</span><span class="years">4 yrs</span></div>
+        <div class="skill-item"><span class="name">Power Automate</span><span class="years">2 yrs</span></div>
+        <div class="skill-item"><span class="name">Git / Version Control</span><span class="years">5 yrs</span></div>
+        <div class="skill-item"><span class="name">Runbooks / Documentation</span><span class="years">5 yrs</span></div>
+      </div>
+    </div>
+    <div class="skill-category">
+      <h3>Also Comfortable With</h3>
+      <div class="skill-list">
+        <div class="skill-item"><span class="name">React / Frontend UI</span><span class="years">3 yrs</span></div>
+        <div class="skill-item"><span class="name">Express.js</span><span class="years">4 yrs</span></div>
+        <div class="skill-item"><span class="name">JWT / OAuth 2.0</span><span class="years">3 yrs</span></div>
+        <div class="skill-item"><span class="name">CompTIA CASP+ / PenTest+</span><span class="years">Active</span></div>
+        <div class="skill-item"><span class="name">Security-first Design</span><span class="years">Applied</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- About -->
+<section id="about">
+  <div class="section-label reveal">About</div>
+  <h2 class="section-title reveal">How I work.</h2>
+
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <p>
+        I do my best work in environments where the problem is not neat yet: legacy systems,
+        manual processes, messy datasets, half-documented workflows, and teams that need something reliable.
+        My default instinct is to understand the business constraint, design the technical path, and automate the pain away.
+      </p>
+      <p>
+        My strongest lane is <strong>backend engineering for integrations, migrations, and operational tooling</strong>.
+        That includes ETL workflows, APIs, validation layers, retry-safe processing, logging, reconciliation, and the practical
+        systems work required to make software dependable in finance-heavy environments.
+      </p>
+      <p>
+        I have worn a lot of hats — engineering, infrastructure, troubleshooting, client-facing delivery, and documentation —
+        which is why I tend to ramp quickly and figure things out when the path is unclear. I am comfortable across the stack,
+        but I market myself backend-first because that is where I create the most value.
+      </p>
+    </div>
+    <div class="about-values">
+      <div class="value-item">
+        <h4>Figure It Out, Then Improve It</h4>
+        <p>I step into unclear systems, trace how they really work, and turn tribal knowledge into repeatable engineering.</p>
+      </div>
+      <div class="value-item">
+        <h4>Automation With Accountability</h4>
+        <p>I do not automate blindly. I care about logging, validations, reconciliation, and safe re-runs because production work needs trust.</p>
+      </div>
+      <div class="value-item">
+        <h4>Strong Communicator Under Real Constraints</h4>
+        <p>I can work with consultants, accountants, operations teams, and engineers to turn business rules into systems that actually ship.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- Contact -->
+<section id="contact" class="contact-section">
+  <div class="section-label reveal">Get In Touch</div>
+  <h2 class="section-title reveal">Open to remote roles.</h2>
+  <p class="section-desc reveal">
+    Looking for backend, integration, migration, and automation engineering work where I can own problems and build reliable systems.
+  </p>
+  <div class="contact-links reveal">
+    <a href="mailto:alexanderestrella23@gmail.com" class="contact-btn primary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+      Email Me
+    </a>
+    <a href="https://medium.com/@alexanderestrella23" class="contact-btn secondary" target="_blank">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+      Medium
+    </a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <span>© 2026 Alexander Estrella</span>
+  <span>alexanderse.dev</span>
+</footer>
+
+<script>
+// Scroll progress bar
+window.addEventListener('scroll', () => {
+  const scrollTop = document.documentElement.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const progress = (scrollTop / scrollHeight) * 100;
+  document.getElementById('scrollProgress').style.width = progress + '%';
+  
+  // Nav border on scroll
+  document.getElementById('nav').classList.toggle('scrolled', scrollTop > 50);
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Smooth scroll for nav links
+document.querySelectorAll('nav a[href^="#"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+
+</body>
+</html>
