@@ -401,15 +401,15 @@ section {
 }
 .shield-icon svg { width: 24px; height: 24px; color: var(--accent-green); }
 
-/* ── GSI VISUAL ── */
-.gsi-visual { width: 100%; }
-.gsi-flow {
+/* ── Sync VISUAL ── */
+.Sync-visual { width: 100%; }
+.Sync-flow {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   width: 100%;
 }
-.gsi-node {
+.Sync-node {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -419,8 +419,8 @@ section {
   gap: 0.75rem;
   transition: all 0.3s;
 }
-.gsi-node:hover { border-color: var(--border-hover); }
-.gsi-node-icon {
+.Sync-node:hover { border-color: var(--border-hover); }
+.Sync-node-icon {
   width: 36px;
   height: 36px;
   border-radius: 8px;
@@ -430,12 +430,12 @@ section {
   font-size: 0.9rem;
   flex-shrink: 0;
 }
-.gsi-node-icon.sage { background: rgba(251,146,60,0.1); border: 1px solid rgba(251,146,60,0.2); }
-.gsi-node-icon.node { background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); }
-.gsi-node-icon.monday { background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.2); }
-.gsi-node-name { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); }
-.gsi-node-desc { font-size: 0.7rem; color: var(--text-muted); }
-.gsi-arrow {
+.Sync-node-icon.sage { background: rgba(251,146,60,0.1); border: 1px solid rgba(251,146,60,0.2); }
+.Sync-node-icon.node { background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); }
+.Sync-node-icon.monday { background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.2); }
+.Sync-node-name { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); }
+.Sync-node-desc { font-size: 0.7rem; color: var(--text-muted); }
+.Sync-arrow {
   text-align: center;
   color: var(--text-muted);
   font-size: 0.7rem;
@@ -445,7 +445,7 @@ section {
   justify-content: center;
   gap: 0.5rem;
 }
-.gsi-arrow::before, .gsi-arrow::after {
+.Sync-arrow::before, .Sync-arrow::after {
   content: '';
   height: 1px;
   width: 20px;
@@ -750,29 +750,29 @@ footer a:hover { color: var(--text-primary); }
         </div>
       </div>
       <div class="project-visual">
-        <div class="gsi-visual">
-          <div class="gsi-flow">
-            <div class="gsi-node">
-              <div class="gsi-node-icon sage">🏗️</div>
+        <div class="Sync-visual">
+          <div class="Sync-flow">
+            <div class="Sync-node">
+              <div class="Sync-node-icon sage">🏗️</div>
               <div>
-                <div class="gsi-node-name">Sage 300 CRE</div>
-                <div class="gsi-node-desc">Legacy jobs · AP · AR · GL data</div>
+                <div class="Sync-node-name">Sage 300 CRE</div>
+                <div class="Sync-node-desc">Legacy jobs · AP · AR · GL data</div>
               </div>
             </div>
-            <div class="gsi-arrow">map + validate + transform</div>
-            <div class="gsi-node">
-              <div class="gsi-node-icon node">⚙️</div>
+            <div class="Sync-arrow">map + validate + transform</div>
+            <div class="Sync-node">
+              <div class="Sync-node-icon node">⚙️</div>
               <div>
-                <div class="gsi-node-name">Data Engine</div>
-                <div class="gsi-node-desc">Procedures · Functions · Reconciliation</div>
+                <div class="Sync-node-name">Data Engine</div>
+                <div class="Sync-node-desc">Procedures · Functions · Reconciliation</div>
               </div>
             </div>
-            <div class="gsi-arrow">migration-ready output</div>
-            <div class="gsi-node">
-              <div class="gsi-node-icon monday">📘</div>
+            <div class="Sync-arrow">migration-ready output</div>
+            <div class="Sync-node">
+              <div class="Sync-node-icon monday">📘</div>
               <div>
-                <div class="gsi-node-name">Sage Intacct</div>
-                <div class="gsi-node-desc">Target structure · Cleaner cutovers</div>
+                <div class="Sync-node-name">Sage Intacct</div>
+                <div class="Sync-node-desc">Target structure · Cleaner cutovers</div>
               </div>
             </div>
           </div>
@@ -780,7 +780,7 @@ footer a:hover { color: var(--text-primary); }
       </div>
     </div>
 
-    <!-- Project 2: GSI-Monday Sync -->
+    <!-- Project 2: Sync-Monday Sync -->
     <div class="project-card reveal">
       <div class="project-info">
         <div class="project-number">02</div>
@@ -807,29 +807,29 @@ footer a:hover { color: var(--text-primary); }
         </div>
       </div>
       <div class="project-visual">
-        <div class="gsi-visual">
-          <div class="gsi-flow">
-            <div class="gsi-node">
-              <div class="gsi-node-icon sage">🏗️</div>
+        <div class="Sync-visual">
+          <div class="Sync-flow">
+            <div class="Sync-node">
+              <div class="Sync-node-icon sage">🏗️</div>
               <div>
-                <div class="gsi-node-name">Sage 300 CRE</div>
-                <div class="gsi-node-desc">32-bit ODBC · Timberline Data</div>
+                <div class="Sync-node-name">Sage 300 CRE</div>
+                <div class="Sync-node-desc">32-bit ODBC · Timberline Data</div>
               </div>
             </div>
-            <div class="gsi-arrow">row hash + diff</div>
-            <div class="gsi-node">
-              <div class="gsi-node-icon node">⚙️</div>
+            <div class="Sync-arrow">row hash + diff</div>
+            <div class="Sync-node">
+              <div class="Sync-node-icon node">⚙️</div>
               <div>
-                <div class="gsi-node-name">Node.js Pipeline</div>
-                <div class="gsi-node-desc">Transform · Validate · Retry</div>
+                <div class="Sync-node-name">Node.js Pipeline</div>
+                <div class="Sync-node-desc">Transform · Validate · Retry</div>
               </div>
             </div>
-            <div class="gsi-arrow">JSON payload</div>
-            <div class="gsi-node">
-              <div class="gsi-node-icon monday">📋</div>
+            <div class="Sync-arrow">JSON payload</div>
+            <div class="Sync-node">
+              <div class="Sync-node-icon monday">📋</div>
               <div>
-                <div class="gsi-node-name">Monday.com</div>
-                <div class="gsi-node-desc">Boards · Items · Status Sync</div>
+                <div class="Sync-node-name">Monday.com</div>
+                <div class="Sync-node-desc">Boards · Items · Status Sync</div>
               </div>
             </div>
           </div>
